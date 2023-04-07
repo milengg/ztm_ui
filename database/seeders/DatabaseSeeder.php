@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RegisterSeeder::class,
             ValueSeeder::class,
-            SettingsSeeder::class
+            SettingsSeeder::class,
+            UpdatesSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 

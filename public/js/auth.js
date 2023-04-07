@@ -4,7 +4,7 @@ function disconnectAccount() {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        url: '/auth/logout',
+        url: '/panel/logout',
         success: function() {
             window.location = '/';
         }

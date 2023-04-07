@@ -3,20 +3,36 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Spatie\ShortSchedule\ShortSchedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Update\Application;
 
 class Kernel extends ConsoleKernel
 {
     /**
+     * The Artisan commands provided by your application.
+     *
+     * @var array
+     */
+    protected $commands =
+	[
+		Commands\PingAcc::class
+    ];
+
+    /**
      * Define the application's command schedule.
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+	 *
      * @return void
      */
-    protected function shortSchedule(ShortSchedule $shortSchedule)
+    protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+		//Check if application is installed
+		if(Application::installed())
+		{
+			//Ping accounting server - status (10 minutes)
+			$schedule->command('ping-acc')->everyMinute();
+		}
     }
 
     /**

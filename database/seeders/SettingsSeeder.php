@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\Setting;
+use App\Models\Settings;
 
 class SettingsSeeder extends Seeder
 {
@@ -34,6 +34,6 @@ class SettingsSeeder extends Seeder
                 'parameter_value' => 'client'
             ]
         ];
-        Setting::insert($settings);
+        Settings::insert($settings);
     }
 }

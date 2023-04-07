@@ -4,9 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Changelog;
-use Exception;
 
-class updateInfo extends Command
+class UpdateInfo extends Command
 {
     /**
      * The name and signature of the console command.
@@ -55,6 +54,6 @@ class updateInfo extends Command
         {
             $this->error('Данни за последни обновления бяха провалени - ' . $e);
         }
-        
     }
 }
+

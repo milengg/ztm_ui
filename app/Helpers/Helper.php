@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Setting;
+use App\Models\Settings;
 
 if (! function_exists('checkMode')) {
     function checkMode()
     { 
-        $mode = Setting::where('parameter_name', 'mode')->first();
+        $mode = Settings::where('parameter_name', 'mode')->first();
         if($mode === null)
         {
             return 'unknown';   

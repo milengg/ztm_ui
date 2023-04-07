@@ -31,10 +31,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-// Updater   
-Route::any('/sync_place', [UpdateController::class, 'syncPlace'])->name('api.sync-place');
+// Updater API
 Route::any('/version', [UpdateController::class, 'getVersion'])->name('api.version');
-Route::any('/download', [UpdateController::class, 'downloadFiles'])->name('api.download');
 Route::any('/ping', [UpdateController::class, 'receivePing'])->name('api.ping');
-Route::any('/isservicealive', [UpdateController::class, 'isAlive'])->name('api.isalive');

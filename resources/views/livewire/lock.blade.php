@@ -36,16 +36,13 @@ $(document).ready(function() {
   const pinButtons = $('.pin-button');
   const pinForm = $('#pin_form');
 
-  // Set initial focus on the pin_number input field
   pinNumber.focus();
 
-  // Add event listeners to each pin button to update the input field value
   pinButtons.on('click', function() {
     pinNumber.val(pinNumber.val() + $(this).val());
     pinNumber.focus();
   });
 
-  // Add event listener to the enter button to submit the form with AJAX
   const enterButton = $('#enter');
   enterButton.on('click', function(event) {
     event.preventDefault();
@@ -57,7 +54,7 @@ $(document).ready(function() {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(response) {
-        window.location = '/auth/main';
+        window.location = '/panel/main';
       },
       error: function(xhr, status, error) {
         alert("Грешен код, моля опитайте отново!");

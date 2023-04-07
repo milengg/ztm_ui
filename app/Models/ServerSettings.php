@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\ClientSetting;
+use App\Models\Updates;
 
-class Client extends Model
+class ServerSettings extends Model
 {
     use HasFactory;
 
@@ -16,7 +16,7 @@ class Client extends Model
      *
      * @var string
      */
-    protected $table = 'clients';
+    protected $table = 'server_settings';
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +24,9 @@ class Client extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'client_name',
+        'tablet_name',
+        'floor',
+        'room',
         'version',
         'ip',
         'public_key',
@@ -51,36 +53,14 @@ class Client extends Model
     {
 		parent::boot();
 
-		//On creating new place
 		self::creating(function($model)
-		{
-            $model->generateKeys();
-        });
-
-		//On updating place
-		self::updating(function($model)
 		{
             $model->generateKeys();
         });
 	}
 
     /**
-	 * Get is place is live (online)
-	 *
-	 * @return bool
-	 */
-	public function getIsLiveAttribute()
-	{
-		if(!is_null($this->pinged_at))
-		{
-			return (parse_date('now')->diffInSeconds($this->pinged_at) < 3600);
-		}
-
-		return false;
-	}
-
-	/**
-	 * Get place setting
+	 * Get tablet setting
 	 *
 	 * @param string $name Setting name
 	 *
@@ -88,12 +68,12 @@ class Client extends Model
 	 */
 	public function getSetting($name)
 	{
-		$setting_value = ClientSetting::first()->$name->value;
+		$setting_value = Updates::where('service', $name)->first()->status;
 		return $setting_value;
 	}
 
     /**
-	 * Generate place keys
+	 * Generate tablet keys
 	 *
 	 * @return void
 	 */

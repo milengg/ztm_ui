@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Update;
+use Illuminate\Console\Command;
+
+use App\Models\ClientSettings;
+use App\Models\Updates;
 
 class Updater extends Base 
 {
@@ -19,18 +23,18 @@ class Updater extends Base
 	public $pub_key = null;
 
     /**
-	 * Blocking file
-	 *
-	 * @var string
-	 */
-	protected $blocking_file = 'service.block';
-
-    /**
 	 * Update command
 	 *
 	 * @var Command
 	 */
 	protected $command = null;
+
+	/**
+	 * Obtain ip
+	 * 
+	 * @var string
+	 */
+	protected $obtain_ip = null;
 
     /**
 	 * Constructor
@@ -38,11 +42,12 @@ class Updater extends Base
 	public function __construct()
 	{
 		//Get sync url
-		$sync_url = setting('accounting-url');
+		$sync_url = ClientSettings::first()->server_ip ?? 'none';
 		//Get public key
-		$pub_key = setting('accounting-key');
+		$pub_key = ClientSettings::first()->public_key ?? 'none';
+
 		//Check for key and url
-		if(empty($sync_url) || empty($pub_key))
+		if($sync_url == 'none' || $pub_key == 'none')
 		{
 			//Don't do anything
 			return;
@@ -50,6 +55,8 @@ class Updater extends Base
 		//Set sync url & pub key
 		$this->sync_url = $sync_url;
 		$this->pub_key = $pub_key;
+		//Obtain ip
+		$this->obtain_ip = ClientSettings::first()->tablet_ip ?? '127.0.0.1';
 	}
 
     /**
@@ -60,168 +67,11 @@ class Updater extends Base
 	public function ping()
 	{
 		//Get remote data
-		$data = $this->getRemoteData('api.ping', ['version' => $this->getInstalledVersion(), 'ip' => $this->getIpAddress()]);
+		$data = $this->getRemoteData('api.ping', ['version' => $this->getInstalledVersion(), 'ip' => $this->obtain_ip]);
 		//Check for ping setting distribution
 		if($this->pingSettingsDistribution($data)) return true;
 		//Check for simple ping
 		return ($data === 'ok');
-	}
-
-    /**
-	 * Update application
-	 *
-	 * @param string $path Path to ZIP with files
-	 *
-	 * @return bool
-	 */
-	public function update(string $path = null, bool $force = false)
-	{
-		//Chek if updates are enabled
-		if(config('app.updates') == false)
-		{
-			//Set error
-			$this->error("Application updates are disabled! This is security feature for develop mode!");
-			//Return false
-			return false;
-		}
-
-		//Check for blocking
-		if(Storage::exists($this->blocking_file) && Storage::lastModified($this->blocking_file) > time() - 3600)
-		{
-			//Set error
-			$this->error("Application is currently blocked by other update or procedure!");
-			//Return false
-			return false;
-		}
-
-		//Check for lib sodium
-		if(!defined('SODIUM_CRYPTO_SECRETBOX_NONCEBYTES'))
-		{
-			//Set error
-			$this->error("Lib sodium is not installed or configured correctly! Update cannot be processed without it!");
-			//Return false
-			return false;
-		}
-
-		//Set success var
-		$sucess = false;
-		//Get blocking file path
-		$blocking_file_path = Storage::disk('local')->getDriver()->getAdapter()->applyPathPrefix($this->blocking_file);
-		//Touch blocking file
-		touch($blocking_file_path);
-
-		//Check for path
-		if(is_null($path))
-		{
-			//Set download info
-			$this->info('Downloading application update...');
-			//Download and get available version file path
-			$path = $this->downloadAvailableVersion();
-		}
-
-		//Check for valid file path
-		if(!empty($path) && file_exists($path))
-		{
-			//Get update version
-			$update_version = $this->getUpdateVersion($path);
-			//Check if update version is newer
-			if($this->isNewVersionAvailable(Application::version(), $update_version) || $force)
-			{
-				//Set information
-				$this->info('Making system archive copy...');
-				//Make whole system copy
-				if($this->makeSystemCopy())
-				{
-					//Running before update procedures
-					if($this->runUpdateProcedures('before'))
-					{
-						//Set information
-						$this->info('Extracting update files...');
-						//Extract update files
-						if($this->extractUpdateFiles($path, true))
-						{
-							//Set information
-							$this->info('Update configuration files...');
-							//Update config files
-							$this->updateConfigs();
-							//Create requred storage paths
-							$this->createStoragePaths();
-							//Running after update procedures
-							$this->runUpdateProcedures('after');
-							//Clear update configuration
-							$this->clearUpdateConfigurations();
-							//Sucessed
-							$sucess = true;
-						}
-						else
-						{
-							//Set error
-							$this->error('Error occurred extraction update files. Update is canceled!');
-						}
-					}
-					else
-					{
-						//Set error
-						$this->error('Error occurred with before update procedures. Update is canceled!');
-					}
-				}
-				else
-				{
-					//Set error
-					$this->error('Error occurred while making system copy. Update is canceled!');
-				}
-			}
-			else
-			{
-				//Set error
-				$this->error('Your current version is newer than update package version. Update is canceled!');
-			}
-		}
-
-		//Remove blocking file
-		Storage::delete($this->blocking_file);
-		//Return success
-		return $sucess;
-	}
-
-	/**
-	 * Get update version
-	 *
-	 * @param string $path Update path
-	 *
-	 * @return string|null
-	 */
-	public function getUpdateVersion(string $path = null)
-	{
-		//Check for update path
-		if(is_null($path))
-		{
-			return $this->getAvailableVersion();
-		}
-
-		//Check if file exists
-		if(file_exists($path))
-		{
-			//Create zip archive
-			$zip = new ZipArchive();
-			//Try to open path as zip
-			if($zip->open($path) === true)
-			{
-				//Get version from archive
-				$version = $zip->getFromName('.version');
-				//Close archive
-				$zip->close();
-				//Check for valid version
-				if(is_string($version))
-				{
-					//Return version
-					return $version;
-				}
-			}
-		}
-
-		//No version
-		return null;
 	}
 
     /**
@@ -245,34 +95,6 @@ class Updater extends Base
 	}
 
     /**
-	 * Is new version available
-	 *
-	 * @param string $currentVersion Current Version
-	 *
-	 * @return bool
-	 */
-	public function isNewVersionAvailable($currentVersion = '', $availableVersion = '')
-    {
-		//Get current installed version
-		$version = $currentVersion ?: $this->getInstalledVersion();
-		$a_version = $availableVersion ?: $this->getAvailableVersion();
-
-		//Check for version
-		if (!$version)
-		{
-            throw new \InvalidArgumentException('No currently installed version specified.');
-        }
-
-		//Compare two versions
-		if (version_compare($version, $a_version, '<'))
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-    /**
 	 * Set update command
 	 *
 	 * @param Command $command Command
@@ -283,46 +105,6 @@ class Updater extends Base
 	{
 		//Set command
 		$this->command = $command;
-	}
-
-    /**
-	 * Get current ip address
-	 *
-	 * @return string
-	 */
-	protected function getIpAddress()
-	{
-		//Set var
-		$ips = [];
-		//Find all coresponsing ip addresses
-		preg_match_all('/inet addr: ?([^ ]+)/', `ifconfig`, $ips);
-		//Check for valid result
-		if(is_array($ips) && isset($ips[1]) && is_array($ips[1]) && count($ips[1]) > 0)
-		{
-			//Iterate all ip addresses	
-			foreach($ips[1] as $ip)
-			{
-				//Check for non-default
-				if($ip !== '127.0.0.1') return $ip;
-			}
-		}
-		else
-		{
-			//Find all coresponsing ip addresses - variant 2
-			preg_match_all('/inet ?([^ ]+)/', `ifconfig`, $ips);
-			//Check for valid result
-			if(is_array($ips) && isset($ips[1]) && is_array($ips[1]) && count($ips[1]) > 0)
-			{
-				//Iterate all ip addresses	
-				foreach($ips[1] as $ip)
-				{
-					//Check for non-default
-					if($ip !== '127.0.0.1') return $ip;
-				}
-			}
-		}
-		//Return default local
-		return '127.0.0.1';
 	}
 
     /**
@@ -340,20 +122,125 @@ class Updater extends Base
 		if(json_last_error() != JSON_ERROR_NONE) return false;
 		//Check for valid array
 		if(!is_array($array)) return false;
+		
 		//Iterate all settings for distribution
 		foreach($array as $name => $value)
 		{
-			//Get current setting
-			$setting = setting($name);
-			//Check if setting exists & is different
-			if(!is_null($setting) && $setting != $value)
-			{
-				//Set new setting value
-				setting($name, $value);
-			}
+			Updates::where('service', $name)->first()->update([
+				'status' => $value
+			]);
 		}
 		//Return success
 		return true;
+	}
+
+	/**
+	 * Get remote url
+	 *
+	 * @param string $route Route
+	 *
+	 * @return string|null
+	 */
+	protected function getRemoteUrl($route)
+	{
+		//Check for sync url
+		if(is_null($this->sync_url))
+		{
+			return null;
+		}
+		//Get url from this release
+		$route_url = route($route);
+		//Parse sync url
+		$sync_url_p = parse_url($this->sync_url);
+		//Parse sync place url
+		$route_url_p = parse_url($route_url);
+		//Check for valid urls
+		if(!is_array($sync_url_p) || !is_array($route_url_p))
+		{
+			return null;
+		}
+		//Add path to sync url
+		$sync_url_p['path'] = $route_url_p['path'];
+		//Buld new route url based on sync url
+		return unparse_url($sync_url_p);
+	}
+
+	/**
+	 * Get remote data
+	 *
+	 * @param string     $route  Route
+	 * @param array|null $params Parameters
+	 * 
+	 * @return string|null
+	 */
+	protected function getRemoteData($route, $params = null)
+	{
+		//Check for public key
+		if(is_null($this->pub_key))
+		{
+			return null;
+		}
+
+		//Get remote url
+		$remote_url = $this->getRemoteUrl($route);
+		//Check for remote url
+		if(is_null($remote_url))
+		{
+			return null;
+		}
+
+		//Set encrypt sync
+		$eSync = null;
+		//Encrypt test sync data
+		openssl_public_encrypt('zontromat', $eSync, $this->pub_key);
+		//Create post content
+		$post = array
+		(
+			'sync'	=> $eSync
+		);
+		
+		//Check for params
+		if(is_array($params))
+		{
+			foreach($params as $key => $value)
+			{
+				//Set encrypted var
+				$encrypted = null;
+				//Encrypt param value
+				ssl_encrypt($value, $encrypted, $this->pub_key, 'public');
+				//Add to post
+				$post[$key] = $encrypted;
+			}
+		}
+
+		//Create new curl request
+		$ch = curl_init($remote_url);
+		//Set curl options
+		curl_setopt($ch, CURLOPT_URL, $remote_url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		//Execute request
+		$result = curl_exec($ch);
+		//Close curl connection
+		curl_close($ch);
+
+		//Set decrypted var
+		$decrypted = null;
+
+		//Check for unencrypted result
+		if(strlen($result) > 2 && $result[0] == '@' && $result[1] == '!' && $result[2] == '@')
+		{
+			return gzdecode(substr($result, 3));
+		}
+
+		//Check for decryption
+		if(ssl_decrypt($result, $decrypted, $this->pub_key, 'public'))
+		{
+			return gzdecode($decrypted);
+		}
+
+		return null;
 	}
 
     /**

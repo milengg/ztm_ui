@@ -4,46 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\RedirectResponse;
 
 use App\Update\Application;
-use App\Models\Setting;
+use App\Models\Settings;
 use App\Models\Log;
 use App\Models\User;
 use App\Models\Changelog;
-use App\Models\Client;
+use App\Models\ServerSettings;
+use App\Models\ClientSettings;
 
 class AdminController extends Controller
 {
+	private $client_settings;
 
-    private $info;
-
-    public function __construct()
+    public function __construct(ClientSettings $client_settings)
     {
-        $this->info = [
-            'platform-version'  => strval(Application::version()),
-            'php-version'       => strval(phpversion()),
-            'tablet-ip'         => strval($_SERVER['REMOTE_ADDR']),
-            'curl-status'       => strval(function_exists('curl_version')),
-            'os-core'           => strval(php_uname()),
-            'framework'         => app()->version()
-        ];
+		$this->client_settings = $client_settings;
     }
 
     public function unlockPin(Request $request)
     {
-        $pin = Setting::where('parameter_name', 'pin')->first()->parameter_value;
+        $pin = Settings::where('parameter_name', 'pin')->first()->parameter_value;
         if($request->input('pin_number') == $pin)
         {
             Log::create([
-                'action' => 'Login accepted',
+                'action' => 'Пин приет',
                 'action_value' => $pin
             ]);
             $user = User::first();
             Auth::login($user);
-            return response()->json(['success' => 'success'], 200);
+            return response()->json(['success' => 'Верен пин код'], 200);
         } else {
             Log::create([
-                'action' => 'Login denied',
+                'action' => 'Пин отказан',
                 'action_value' => $request->input('pin_number')
             ]);
             return response()->json(['error' => 'Грешен пин код'], 400);
@@ -55,56 +50,117 @@ class AdminController extends Controller
         $request->session()->flush();
         Auth::logout();
     }
-    
-    public function settings()
-    {
-        $info = $this->info;
-        
-        $settings = Setting::paginate(6);
-        return view('settings.index', compact('info', 'settings'));
-    }
 
-    public function settings_edit($id)
+    public function main()
     {
-        $info = $this->info;
-        $parameter = Setting::find($id);
-        return view('settings.edit_parameter', compact('info', 'parameter'));
-    }
-
-    public function settings_update(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'parameter_name'  => $request->input('parameter_name'),
-            'parameter_value' => $request->input('parameter_value')
-        ]);
-
-        return redirect()->route('admin.index')->with(['message' => 'Параметър бе редактиран успешно!']);
+        $settings = Settings::paginate(9);
+        return view('panel.index', compact('settings'));
     }
 
     public function logs()
     {
-        
-        $info = $this->info;
-        $logs = Log::paginate(6);
-        return view('settings.logs', compact('info', 'logs'));
+        $logs = Log::paginate(9);
+        return view('panel.logs', compact('logs'));
     }
 
+    public function changelog(Request $request)
+	{
+        $contents = Changelog::all();
+		return view('panel.changelog', compact('contents'));
+	}
+
+    public function settings_edit($id)
+    {
+        $parameter = Settings::find($id);
+        return view('settings.edit_parameter', compact('parameter'));
+    }
+
+    public function settings_update(Request $request, $id): RedirectResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'parameter_name' => 'required',
+            'parameter_value' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.main')
+                            ->withErrors($validator)
+                            ->withInput();
+        }
+
+        $validated = $validator->validated();
+        
+        Settings::where('id', $id)->update([
+            'parameter_name'  => $validated['parameter_name'],
+            'parameter_value' => $validated['parameter_value']
+        ]);
+
+        return redirect()->route('admin.main')->with(['message' => 'Параметър бе редактиран успешно!']);
+    }
+    
+    public function clients()
+    {
+        $tablets = ServerSettings::paginate(9);
+        $servers = ClientSettings::paginate(9);
+
+        return view('updates.index', compact('tablets', 'servers'));
+    }
+
+    public function add_client()
+    {
+        return view('updates.add');
+    }
+
+    public function create_server_settings(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'server_name' => 'required',
+            'server_ip' => 'required',
+            'public_key' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.clients')->with(['error' => 'Възникна грешка!']);
+        }
+
+        $validated = $validator->validated();
+
+        ClientSettings::create([
+            'server_name' => $validated['server_name'],
+            'server_ip' => $validated['server_ip'],
+			'tablet_ip' => $this->client_settings->getIpAddress(),
+            'public_key' => $validated['public_key']
+        ]);
+
+        return redirect()->route('admin.clients')->with(['message' => 'Настройки за сървър бяха добавени успешно!']);
+    }
+
+    public function create_tablet_settings(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'tablet_name' => 'required',
+            'floor' => 'required',
+            'room' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.clients')->with(['error' => 'Възникна грешка!']);
+        }
+
+        $validated = $validator->validated();
+
+        ServerSettings::create([
+            'tablet_name' => $validated['tablet_name'],
+            'floor' => $validated['floor'],
+            'room'  => $validated['room']
+        ]);
+
+        return redirect()->route('admin.clients')->with(['message' => 'Таблет добавен успешно!']);
+    }
+
+    //Todo: Binary update expected
     public function runQt()
     {
         exec('/opt/kill_kiosk_run_qt');
-    }
-
-	public function changelog(Request $request)
-	{
-        $info = $this->info;
-        $contents = Changelog::all();
-		return view('settings.changelog', compact('info', 'contents'));
-	}
-
-    public function clients()
-    {
-        $clients = Client::paginate(6);
-        $info = $this->info;
-        return view('clients.index', compact('clients', 'info'));
     }
 }
