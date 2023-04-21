@@ -14,8 +14,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands =
-	[
-		Commands\PingAcc::class
+	  [
+		  Commands\PingAcc::class,
+      Commands\ExecuteUpdate::class
     ];
 
     /**
@@ -27,12 +28,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-		//Check if application is installed
-		if(Application::installed())
-		{
-			//Ping accounting server - status (10 minutes)
-			$schedule->command('ping-acc')->everyMinute();
-		}
+		  //Check if application is installed
+		  if(Application::installed())
+		  {
+		  	//Ping accounting server - status (10 minutes)
+		  	$schedule->command('ping-acc')->everyMinute();
+		  	$schedule->command('execute-update')->everyMinute();
+		  }
     }
 
     /**

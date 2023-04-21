@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+html {
+  overscroll-behavior-x: none;
+} 
+body {
+  overscroll-behavior-x: none;
+}
+
 .range-slider {
   --range-slider-track-color: #151A42;
   --range-slider-thumb-size: 1.5rem;

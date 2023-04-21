@@ -28,7 +28,7 @@
         <tbody>
             @forelse($settings as $setting)
             <tr class="bg-blue-dark border-b border-blue-block">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">
                     {{ $setting->parameter_name }}
                 </th>
                 <td class="px-6 py-4">
@@ -45,7 +45,7 @@
             </tr>
             @empty
             <tr class="bg-blue-dark border-b border-blue-block">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">
                     Няма намерени параметри в базата данни!
                 </th>
                 <td></td>

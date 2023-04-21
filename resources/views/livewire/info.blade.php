@@ -32,10 +32,6 @@
                 <p class="text-lg text-white">{{ $info['php-version'] }}</p>
             </div>
             <div>
-                <p class="text-sm text-white">Мрежов адрес</p>
-                <p class="text-lg text-white">{{ $info['tablet-ip'] }}</p>
-            </div>
-            <div>
                 <p class="text-sm text-white">Curl плъгин</p>
                 <p class="text-lg text-white">{{ $info['curl-status'] ? 'Активен':'Неактивен' }}</p>
             </div>

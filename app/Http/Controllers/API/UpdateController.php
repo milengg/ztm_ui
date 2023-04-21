@@ -46,7 +46,7 @@ class UpdateController extends BaseController
 			$place->save();
 
 			//Check for settings distribution
-			if($place->first()->distribute_settings)
+			if($place->distribute_settings)
 			{
 				//Set distribution array
 				$distribution = [];
@@ -56,7 +56,7 @@ class UpdateController extends BaseController
 					$distribution[$setting] = $place->getSetting($setting);
 				}
 				//Remove settings distribution
-				$place->first()->update(['distribute_settings' => false]);
+				$place->update(['distribute_settings' => false]);
 				//Return json distributed setting
 				return json_encode($distribution);
 			}
@@ -130,7 +130,7 @@ class UpdateController extends BaseController
 	 *
 	 * @return array|null
 	 */
-	protected function readRemoteData(Request $request, Client &$place = null)
+	protected function readRemoteData(Request $request, ServerSettings &$place = null)
 	{
 		//Data array
 		$data = [];

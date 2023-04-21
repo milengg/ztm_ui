@@ -4,6 +4,13 @@
       <div class="modal fixed inset-0 flex items-center justify-center z-50">
         <div class="modal-content">
             <div class="bg-blue-block p-6 rounded-3xl">
+                <div class="flex justify-end">
+                  <button class="mb-3" onclick="closeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 bg-white">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
                 <form id="pin_form">
                     <div class="grid">
                         <p class="text-white text-center font-roboto text-xl">Моля, въведете пин за да отключите екрана</p>
@@ -31,6 +38,11 @@
 </div>
 @push('js')
 <script>
+function closeModal() {
+  const modal = document.getElementById('lock');
+  modal.classList.add('hidden');
+}
+
 $(document).ready(function() {
   const pinNumber = $('#pin_number');
   const pinButtons = $('.pin-button');

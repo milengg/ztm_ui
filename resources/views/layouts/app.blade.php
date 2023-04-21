@@ -12,11 +12,11 @@
         <link rel="stylesheet" href="{{ asset('css/range-slider.css') }}">
         <!-- Livewire -->
         @livewireStyles
+        <!-- Jquery -->
+        <script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script>
         <!-- Toastr Notifications -->
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <!-- Jquery -->
-        <script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script>
         <!-- keyboard -->
         <script src="{{ asset('js/kioskboard-aio-2.3.0.min.js') }}"></script>
     </head>

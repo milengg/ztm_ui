@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('service');
             $table->boolean('status')->default(false);
+            $table->boolean('is_updated')->default(false);
             $table->timestamps();
         });
     }

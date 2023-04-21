@@ -126,9 +126,16 @@ class Updater extends Base
 		//Iterate all settings for distribution
 		foreach($array as $name => $value)
 		{
-			Updates::where('service', $name)->first()->update([
+			$update_service = Updates::where('service', $name)->first();
+			$update_service->update([
 				'status' => $value
 			]);
+			if($update_service->status === true)
+			{
+				$update_service->update([
+					'is_updated' => true
+				]);
+			}
 		}
 		//Return success
 		return true;

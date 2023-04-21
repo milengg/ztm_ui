@@ -23,7 +23,8 @@ class Updates extends Model
      */
     protected $fillable = [
         'service',
-        'status'
+        'status',
+        'is_updated'
     ];
 
     /**
@@ -32,6 +33,7 @@ class Updates extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'status' => 'boolean'
+        'status' => 'boolean',
+        'is_updated' => 'boolean'
     ];
 }

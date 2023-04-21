@@ -26,14 +26,14 @@
             @forelse($logs as $log)
             <tr class="bg-blue-dark border-b border-blue-block">
                 @if($log->action == 'Пин приет')
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-green-500">
+                <th scope="row" class="px-6 py-4 font-medium text-green-500 whitespace-nowrap">
                     {{ $log->action }}
                 </th>
                 <td class="px-6 py-4">
                     {{ $log->action_value}}
                 </td>
                 @else
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-red-500">
+                <th scope="row" class="px-6 py-4 font-medium text-red-500 whitespace-nowrap">
                     {{ $log->action }}
                 </th>
                 <td class="px-6 py-4">
@@ -46,7 +46,7 @@
             </tr>
             @empty
             <tr class="bg-blue-dark border-b border-blue-block">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <th scope="row" class="px-6 py-4 font-medium text-white whitespace-nowrap">
                     Няма намерени параметри в базата данни!
                 </th>
                 <td></td>

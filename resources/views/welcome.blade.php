@@ -33,6 +33,9 @@
             <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 6 ЧАСА 16°C</p>
             <img class="inline" src="{{ asset('img/weather/rain.png') }}" alt="weather" />
         </div>
+        <div class="flex justify-center mt-7">
+            <p class="text-white font-roboto">версия на софтуера: v.{{ $version }}</p>
+        </div>
     </div>
     <div class="bg-blue-block rounded-3xl">
         <livewire:vent />
