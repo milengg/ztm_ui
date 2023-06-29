@@ -13,12 +13,12 @@
       @csrf
       <div class="mb-6">
         <label for="parameter_name" class="block mb-2 text-sm font-medium text-white">Параметър име</label>
-        <input type="text" name="parameter_name" class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" value="{{ $parameter->parameter_name }}" readonly>
+        <input type="text" name="parameter_name" data-kioskboard-type="all" data-kioskboard-placement="bottom" data-kioskboard-specialcharacters="false" class="js-virtual-keyboard bg-gray-700 border border-gray-600 placeholder-gray-400 text-white text-sm rounded-lg block w-full p-2.5" value="{{ $parameter->parameter_name }}" readonly>
       </div>
       @if($parameter->parameter_name == 'mode')
       <div class="mb-6">
         <label for="parameter_value" class="block mb-2 text-sm font-medium text-white">Параметър стойност</label>
-        <select name="parameter_value" class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <select name="parameter_value" class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             @if($parameter->parameter_value == 'server')
             <option value="server" selected>Сървър</option>
             <option value="client">Клиент</option>
@@ -31,7 +31,7 @@
       @else
       <div class="mb-6">
         <label for="parameter_value" class="block mb-2 text-sm font-medium text-white">Параметър стойност</label>
-        <input type="text" name="parameter_value" data-kioskboard-type="all" data-kioskboard-placement="bottom" data-kioskboard-specialcharacters="false" class="bg-gray-50 border border-gray-300 js-virtual-keyboard text-white text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" value="{{ $parameter->parameter_value }}" required>
+        <input type="text" name="parameter_value" data-kioskboard-type="all" data-kioskboard-placement="bottom" data-kioskboard-specialcharacters="false" class="js-virtual-keyboard bg-gray-700 border border-gray-600 placeholder-gray-400 text-white text-sm rounded-lg block w-full p-2.5" value="{{ $parameter->parameter_value }}" required>
       </div>
       @endif
       <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Редактиране</button>

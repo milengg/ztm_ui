@@ -12,7 +12,7 @@
             </p>
         </div>
         <div class="range-slider">
-            <input id="vent" type="range" value="{{$ventDBValue->value}}" step="5" min="0" max="100"/>
+            <input id="vent" type="range" value="{{$ventDBValue->value}}" step="10" min="0" max="100"/>
         </div>
     </div>
 </div>

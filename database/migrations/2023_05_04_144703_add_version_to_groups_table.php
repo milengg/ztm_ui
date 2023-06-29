@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('client_settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('server_name');
-            $table->string('server_ip');
-            $table->string('tablet_ip');
-            $table->text('public_key')->nullable();
-            $table->timestamps();
+        Schema::table('groups', function (Blueprint $table) {
+            $table->string('version')->after('name');
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_settings');
+        Schema::table('groups', function (Blueprint $table) {
+            $table->dropColumn('version');
+        });
     }
 };

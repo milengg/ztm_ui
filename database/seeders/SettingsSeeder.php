@@ -16,10 +16,19 @@ class SettingsSeeder extends Seeder
      */
     public function run()
     {
+        $serialCode = strtoupper(substr(md5(microtime()),rand(0,26),6));
         $settings = [
             [
-                'parameter_name' => 'pin',
+                'parameter_name' => 'serial_number',
+                'parameter_value' => $serialCode
+            ],
+            [
+                'parameter_name' => 'admin_pin',
                 'parameter_value' => '1234'
+            ],
+            [
+                'parameter_name' => 'reset_pin',
+                'parameter_value' => '7777'
             ],
             [
                 'parameter_name' => 'tablet_locking_time',
@@ -32,6 +41,10 @@ class SettingsSeeder extends Seeder
             [
                 'parameter_name' => 'mode',
                 'parameter_value' => 'client'
+            ],
+            [
+                'parameter_name' => 'updater_version',
+                'parameter_value' => 'none'
             ]
         ];
         Settings::insert($settings);

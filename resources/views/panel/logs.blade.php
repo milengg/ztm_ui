@@ -25,7 +25,7 @@
         <tbody>
             @forelse($logs as $log)
             <tr class="bg-blue-dark border-b border-blue-block">
-                @if($log->action == 'Пин приет')
+                @if($log->action == 'Админ пин приет' || $log->action == 'Ресет пин приет')
                 <th scope="row" class="px-6 py-4 font-medium text-green-500 whitespace-nowrap">
                     {{ $log->action }}
                 </th>

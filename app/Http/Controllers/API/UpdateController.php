@@ -6,6 +6,8 @@ use App\Update\Application;
 use Illuminate\Http\Request;
 
 use App\Models\ServerSettings;
+use App\Models\ClientRequest;
+use App\Models\Group;
 
 /**
  * Api controller
@@ -21,7 +23,7 @@ class UpdateController extends BaseController
 	 */
 	public function receivePing(Request $request)
 	{
-		return $this->proxyRemote($request, function($place, $params, $request)
+		return $this->proxyRemote($request, function($place, $params)
 		{
 			//Set distributable settings
 			$distributable_settings = ['ztmUI', 'zoneID', 'zontromat'];
@@ -40,6 +42,12 @@ class UpdateController extends BaseController
 				$place->ip = $params['ip'];
 			}
 
+			//Check for key information
+			if(isset($params['serial_number']) && is_string($params['serial_number']))
+			{
+				$place->serial_number = $params['serial_number'];
+			}
+
 			//Set place pinged at time
 			$place->pinged_at = parse_date('now');
 			//Save place
@@ -55,6 +63,7 @@ class UpdateController extends BaseController
 				{
 					$distribution[$setting] = $place->getSetting($setting);
 				}
+				$distribution['version'] = $place->getUpdaterVersion($params['serial_number']);
 				//Remove settings distribution
 				$place->update(['distribute_settings' => false]);
 				//Return json distributed setting
@@ -64,6 +73,26 @@ class UpdateController extends BaseController
 			//Return status
 			return 'ok';
 		});
+	}
+
+	public function receiveRequest(Request $request)
+	{
+		if(!($client = ClientRequest::find($request->serial)))
+		{
+			ClientRequest::create([
+				'serial' => $request->serial,
+				'ip' => $request->ip,
+				'response' => ''
+			]);
+
+			return 'ok';
+		}
+		else if($client->response)
+		{
+			return $client->response;
+		}
+
+		return abort(403);
 	}
 
 	/**

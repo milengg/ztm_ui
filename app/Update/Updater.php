@@ -5,6 +5,7 @@ use Illuminate\Console\Command;
 
 use App\Models\ClientSettings;
 use App\Models\Updates;
+use App\Models\Settings;
 
 class Updater extends Base 
 {
@@ -36,6 +37,13 @@ class Updater extends Base
 	 */
 	protected $obtain_ip = null;
 
+	/**
+	 * Obtain ip
+	 * 
+	 * @var string
+	 */
+	protected $tablet_serial_number = null;
+
     /**
 	 * Constructor
 	 */
@@ -46,8 +54,9 @@ class Updater extends Base
 		//Get public key
 		$pub_key = ClientSettings::first()->public_key ?? 'none';
 
+		
 		//Check for key and url
-		if($sync_url == 'none' || $pub_key == 'none')
+		if($sync_url == 'none')
 		{
 			//Don't do anything
 			return;
@@ -57,6 +66,7 @@ class Updater extends Base
 		$this->pub_key = $pub_key;
 		//Obtain ip
 		$this->obtain_ip = ClientSettings::first()->tablet_ip ?? '127.0.0.1';
+		$this->tablet_serial_number = Settings::where('parameter_name', 'serial_number')->first()->parameter_value ?? 'None';
 	}
 
     /**
@@ -67,10 +77,41 @@ class Updater extends Base
 	public function ping()
 	{
 		//Get remote data
-		$data = $this->getRemoteData('api.ping', ['version' => $this->getInstalledVersion(), 'ip' => $this->obtain_ip]);
+		$data = $this->getRemoteData('api.ping', ['version' => $this->getInstalledVersion(), 'ip' => $this->obtain_ip, 'serial_number' => $this->tablet_serial_number]);
 		//Check for ping setting distribution
 		if($this->pingSettingsDistribution($data)) return true;
 		//Check for simple ping
+		return ($data === 'ok');
+	}
+
+	/**
+	 * Make request to server
+	 *
+	 * @return bool
+	 */
+	public function makeRequest()
+	{
+		if($row = Settings::where('parameter_name', 'serial_number')->first())
+		{
+			$serial = $row->parameter_value;
+			if($clinet = ClientSettings::first())
+			{
+				$ip = $clinet->tablet_ip;	
+			} else {
+				$ip = '127.0.0.1';
+			}
+		} else {
+			return false;
+		}
+
+		$data = $this->getUnencryptedRemoteData('api.request', ['serial' => $serial, 'ip' => $ip]);
+
+		if($data !== 'ok' && strpos($data, '-----BEGIN PUBLIC KEY-----') === 0)
+		{
+			ClientSettings::first()->update(['public_key' => $data]);
+			return true;
+		}
+
 		return ($data === 'ok');
 	}
 
@@ -107,6 +148,41 @@ class Updater extends Base
 		$this->command = $command;
 	}
 
+	/**
+	 * Get unencrypted remote data
+	 * 
+	 * @param string     $route  Route
+	 * @param array|null $params Parameters
+	 * 
+	 * @return string|null
+	 */
+	protected function getUnencryptedRemoteData($route, $params = null)
+	{
+		//Get remote url
+		$remote_url = $this->getRemoteUrl($route);
+		//Check for remote url
+		if(is_null($remote_url))
+		{
+			return null;
+		}
+
+		//Create new curl request
+		$ch = curl_init($remote_url);
+		//Set curl options
+		curl_setopt($ch, CURLOPT_URL, $remote_url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		//Execute request
+		$result = curl_exec($ch);
+		//Close curl connection
+		curl_close($ch);
+
+		//Return result
+		return $result;
+	}
+
+
     /**
 	 * Ping settings distribution
 	 *
@@ -126,15 +202,20 @@ class Updater extends Base
 		//Iterate all settings for distribution
 		foreach($array as $name => $value)
 		{
-			$update_service = Updates::where('service', $name)->first();
-			$update_service->update([
-				'status' => $value
-			]);
-			if($update_service->status === true)
+			if($name == 'version')
 			{
+				Settings::where('parameter_name', 'updater_version')->first()->update(['parameter_value' => $value]);
+			} else {
+				$update_service = Updates::where('service', $name)->first();
 				$update_service->update([
-					'is_updated' => true
+					'status' => $value
 				]);
+				if($update_service->status === true)
+				{
+					$update_service->update([
+						'is_updated' => true
+					]);
+				}
 			}
 		}
 		//Return success

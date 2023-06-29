@@ -34,3 +34,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Updater API
 Route::any('/version', [UpdateController::class, 'getVersion'])->name('api.version');
 Route::any('/ping', [UpdateController::class, 'receivePing'])->name('api.ping');
+Route::any('/request', [UpdateController::class, 'receiveRequest'])->name('api.request');

@@ -4,14 +4,15 @@
 <div class="grid grid-cols-3 gap-4 m-7 pt-2">
     <div class="mt-6">
         <div class="flex justify-between px-14">
-            <p class="text-teal-custom font-roboto font-bold text-4xl">BCVT LOGO</p>
+            <!--<p class="text-teal-custom font-roboto font-bold text-4xl">BCVT LOGO</p>-->
+            <img src="{{ asset('img/bcvt-logo.png') }}" alt="bcvt logo" />
             <button id="lock_button" onclick="pinScreen()" disabled>
                 <img src="{{ asset('img/icons/settings.png') }}" alt="settings"/>
             </button>
         </div>
         <div class="flex flex-col text-center mt-10">
-            <div id="clock" class="text-white text-center font-roboto text-9xl">3:33</div>
-            <div id="date" class="text-teal-dark text-center font-roboto pl-5 mt-5 text-5xl">33 СЕПТЕМВРИ 3333</div>
+            <div id="clock" class="text-white text-center font-roboto text-9xl">{{ date('H:i') }}</div>
+            <div id="date" class="text-teal-dark text-center font-roboto pl-5 mt-5 text-5xl">{{ bgDate('d M Y') }}</div>
         </div>
     </div>
     <div class="bg-blue-block rounded-3xl">

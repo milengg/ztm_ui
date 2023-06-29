@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('server_settings', function (Blueprint $table) {
             $table->id();
             $table->string('tablet_name');
+            $table->string('serial_number')->nullable();
             $table->string('floor')->nullable();
             $table->string('room')->nullable();
             $table->string('version')->nullable();

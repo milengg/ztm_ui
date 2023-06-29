@@ -9,8 +9,10 @@
 
 @if(checkMode() == 'server')
 <div class="bg-blue-block p-4">
-    <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onclick="window.location.href='{{ route('admin.clients.add') }}'">ДОБАВИ ТАБЛЕТ</button>
+    <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onclick="window.location.href='{{ route('admin.automatic.discovery') }}'">АВТОМАТИЧНО ОТКРИВАНЕ</button>
+    <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onclick="window.location.href='{{ route('admin.clients.add') }}'">ДОБАВИ ТАБЛЕТ РЪЧНО</button>
     <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onclick="window.location.href='{{ route('admin.updates.settings') }}'">НАСТРОЙКА ЪПДЕЙТИ</button>
+    <button type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onclick="window.location.href='{{ route('admin.groups') }}'">ГРУПИ</button>
 </div>
 
 <div class="relative overflow-x-auto">
@@ -21,7 +23,13 @@
                     Таблет име
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Група
+                </th>
+                <th scope="col" class="px-6 py-3">
                     Версия на софтуера
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Сериен номер
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Мрежов адрес
@@ -31,12 +39,6 @@
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Стая
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Публичен ключ
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Частен ключ
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Ъпдейти
@@ -56,7 +58,13 @@
                     {{ $tablet->tablet_name }}
                 </th>
                 <td class="px-6 py-4">
+                    {{ $tablet->group ? $tablet->group->name : 'Няма' }}
+                </td>
+                <td class="px-6 py-4">
                     {{ $tablet->version ?: 'В очакване' }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ $tablet->serial_number ?: 'В очакване' }}
                 </td>
                 <td class="px-6 py-4">
                     {{ $tablet->ip ?: 'В очакване' }}
@@ -66,12 +74,6 @@
                 </td>
                 <td class="px-6 py-4">
                     {{ $tablet->room ?: 'В очакване' }}
-                </td>
-                <td class="px-6 py-4">
-                    {{ $tablet->public_key ? 'Да':'Не'}}
-                </td>
-                <td class="px-6 py-4">
-                    {{ $tablet->private_key ? 'Да':'Не'}}
                 </td>
                 <td class="px-6 py-4">
                     {{ $tablet->distribute_settings ? 'Пуснати':'Спрени' }}

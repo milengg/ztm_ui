@@ -182,3 +182,7 @@ body {
 {
   fill: #F04E51;
 }
+
+#climate-animation-2 {
+  display: none;
+}

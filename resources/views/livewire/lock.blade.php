@@ -66,7 +66,12 @@ $(document).ready(function() {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(response) {
-        window.location = '/panel/main';
+        if(response.success == 'admin')
+        {
+          window.location = '/panel/main';
+        } else {
+          window.location.reload();
+        }
       },
       error: function(xhr, status, error) {
         alert("Грешен код, моля опитайте отново!");

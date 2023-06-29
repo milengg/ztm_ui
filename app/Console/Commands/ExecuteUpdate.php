@@ -34,24 +34,42 @@ class ExecuteUpdate extends Command
         
         foreach($updates as $update)
         {
-            if($update->status === true)
+            if($update->service == 'ztmUI')
             {
-                $this->info($update->service . ' е предвиден за ъпдейт...');
-                $this->info('Ъпдейта започва обновяване...');
-                if($update->service == 'ztmUI')
+                $ztmUI = Updates::where('service', 'ztmUI')->first();
+                if($ztmUI->is_updated == true)
                 {
-                    if($update->is_updated === true)
-                    {
-                        exec('/opt/update_ztmUI_process');
-                        $update->update(['is_updated' => false]);
-                        Artisan::call('update:changelog', []);
-                        $this->info('Ъпдейта приключи успешно!');
-                    } else {
-                        $this->error('Ъпдейта вече е минал!');
-                    }
+                    $this->info('ztmUI е предвиден за ъпдейт...');
+                    $ztmUI->update(['is_updated' => false]);
+                    exec('/opt/update_ztmUI');
+                    $this->info('Ъпдейта приключи успешно!');
+                } else {
+                    $this->error('Ъпдейта вече е минал!');
                 }
-            } else {
-                $this->error($update->service . ' не е предвиден за ъпдейт!');
+            } 
+            if($update->service == 'zoneID') {
+                $zoneID = Updates::where('service', 'zoneID')->first();
+                if($zoneID->is_updated == true)
+                {
+                    $this->info('zoneID е предвиден за ъпдейт...');
+                    $zoneID->update(['is_updated' => false]);
+                    exec('/opt/update_zoneID');
+                    $this->info('Ъпдейта приключи успешно!');
+                } else {
+                    $this->error('Ъпдейта вече е минал!');
+                }
+            } 
+            if($update->service == 'zontromat') {
+                $zontromat = Updates::where('service', 'zontromat')->first();
+                if($zontromat->is_updated == true)
+                {
+                    $this->info('zontromat е предвиден за ъпдейт...');
+                    $zontromat->update(['is_updated' => false]);
+                    exec('/opt/update_zontromat');
+                    $this->info('Ъпдейта приключи успешно!');
+                } else {
+                    $this->error('Ъпдейта вече е минал!');
+                }
             }
         }
     }
