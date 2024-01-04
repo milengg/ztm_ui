@@ -27,6 +27,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('data/post', [ValueController::class, 'update']);
 });
 
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('settings/get', [ValueController::class, 'getSettings']);
+    Route::post('settings/post', [ValueController::class, 'setSettings']);
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

@@ -43,6 +43,10 @@
                 <p class="text-sm text-white">Framework ядро</p>
                 <p class="text-lg text-white">{{ $info['framework'] }}</p>
             </div>
+            <div>
+                <p class="text-sm text-white">Име на хост</p>
+                <p class="text-lg text-white">{{ $hostname }}</p>
+            </div>
         </div>
     </div>
 </div>

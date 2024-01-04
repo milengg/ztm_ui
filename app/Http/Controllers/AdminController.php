@@ -30,8 +30,23 @@ class AdminController extends Controller
     {
         $admin_pin = Settings::where('parameter_name', 'admin_pin')->first()->parameter_value;
         $reset_pin = Settings::where('parameter_name', 'reset_pin')->first()->parameter_value;
+        $tablet_ip = Settings::where('parameter_name', 'tablet_ip')->first();
         if($request->input('pin_number') == $admin_pin)
         {
+            if(!$tablet_ip)
+            {
+                Settings::create([
+                    'parameter_name' => 'tablet_ip',
+                    'parameter_value' => $this->client_settings->getIpAddress(),
+                    'bgerp_sync' => 0
+                ]);
+            } else {
+                $tablet_ip->update([
+                    'parameter_name' => 'tablet_ip',
+                    'parameter_value' => $this->client_settings->getIpAddress(),
+                    'bgerp_sync' => 0
+                ]);
+            }
             Log::create([
                 'action' => 'Админ пин приет',
                 'action_value' => $admin_pin
@@ -98,6 +113,12 @@ class AdminController extends Controller
         }
 
         $validated = $validator->validated();
+
+        if($validated['parameter_name'] == 'hostname')
+        {
+            file_put_contents('/etc/hostname', $validated['parameter_value']);
+            exec(sprintf('hostname "%s"', $validated['parameter_value']));
+        }
         
         Settings::where('id', $id)->update([
             'parameter_name'  => $validated['parameter_name'],
@@ -148,7 +169,7 @@ class AdminController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'tablet_name' => 'required',
-            'group_id' => 'integer',
+            'group_id' => 'required:integer',
             'floor' => 'required',
             'room' => 'required'
         ]);

@@ -41,7 +41,7 @@
       </div>
   </div>
 </div>
-@push('js')
+<?php $__env->startPush('js'); ?>
 <script>
 function closeModal() {
   const modal = document.getElementById('lock');
@@ -90,4 +90,4 @@ $(document).ready(function() {
   });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?><?php /**PATH C:\laragon\www\ztmUI-prod\resources\views/livewire/lock.blade.php ENDPATH**/ ?>

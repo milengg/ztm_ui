@@ -47,7 +47,7 @@
       </div>
       <div class="mb-6">
         <label for="server_ip" class="block mb-2 text-sm font-medium text-white dark:text-white">Мрежов адрес на сървър</label>
-        <input type="text" name="server_ip" data-kioskboard-type="all" data-kioskboard-placement="bottom" data-kioskboard-specialcharacters="false" class="js-virtual-keyboard bg-gray-700 border border-gray-600 placeholder-gray-400 text-white text-sm rounded-lg block w-full p-2.5" required>
+        <input type="text" name="server_ip" data-kioskboard-type="all" data-kioskboard-placement="bottom" data-kioskboard-specialcharacters="true" class="js-virtual-keyboard bg-gray-700 border border-gray-600 placeholder-gray-400 text-white text-sm rounded-lg block w-full p-2.5" required>
       </div>
       <div class="mb-6">
         <label for="public_key" class="block mb-2 text-sm font-medium text-white dark:text-white">Криптиращ ключ</label>
