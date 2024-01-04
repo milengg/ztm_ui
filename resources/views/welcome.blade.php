@@ -11,7 +11,7 @@
             </button>
         </div>
         <div class="mt-3 text-center">
-            <p class="text-white font-roboto text-2xl font-bold"> {{ $hostname->parameter_value }}</p>
+            <p class="text-white font-roboto text-2xl font-bold"> {{ $hostname->parameter_value ?? 'missing' }}</p>
         </div>
         <div class="flex flex-col text-center mt-3">
             <div id="clock" class="text-white text-center font-roboto text-9xl">{{ date('H:i') }}</div>
