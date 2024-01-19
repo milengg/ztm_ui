@@ -83,15 +83,15 @@
         <div class="text-center">
             <img id="arrow-container" class="absolute pl-5 pt-2" src="" alt="arrow"/>
             <p id="climate-value" class="font-roboto text-8xl">
-                {{$ClimateDBValue->value}}<span class="font-roboto text-6xl absolute pt-1 pl-2">°C</span> 
+                <?php echo e($ClimateDBValue->value); ?><span class="font-roboto text-6xl absolute pt-1 pl-2">°C</span> 
             </p>
         </div>
         <div class="range-slider mt-14">
-            <input id="climate" type="range" step="1" value="{{$ClimateDBValue->value}}" min="21" max="28"/>
+            <input id="climate" type="range" step="1" value="<?php echo e($ClimateDBValue->value); ?>" min="21" max="28"/>
         </div>
     </div>
 </div>
-@push('js')
+<?php $__env->startPush('js'); ?>
 <script>
     $( document ).ready(function(){ 
     const arrowContainer = document.getElementById('arrow-container');
@@ -99,14 +99,14 @@
     const rangeInput = document.getElementById('climate');
 
     const images = [
-      { value: 21, url: '{{ asset('/img/icons/blue/1.png')}}', svg: 'climate-1', class: 'text-teal-custom' },
-      { value: 22, url: '{{ asset('/img/icons/blue/2.png')}}', svg: 'climate-1', class: 'text-teal-custom' },
-      { value: 23, url: '{{ asset('/img/icons/blue/3.png')}}', svg: 'climate-1', class: 'text-teal-custom' },
-      { value: 24, url: '{{ asset('/img/icons/blue/4.png')}}', svg: 'climate-1', class: 'text-teal-custom' },
-      { value: 25, url: '{{ asset('/img/icons/red/1.png')}}', svg: 'climate-1', class: 'text-red-main' },
-      { value: 26, url: '{{ asset('/img/icons/red/2.png')}}', svg: 'climate-1', class: 'text-red-main' },
-      { value: 27, url: '{{ asset('/img/icons/red/3.png')}}', svg: 'climate-1', class: 'text-red-main' },
-      { value: 28, url: '{{ asset('/img/icons/red/4.png')}}', svg: 'climate-1', class: 'text-red-main' },
+      { value: 21, url: '<?php echo e(asset('/img/icons/blue/1.png')); ?>', svg: 'climate-1', class: 'text-teal-custom' },
+      { value: 22, url: '<?php echo e(asset('/img/icons/blue/2.png')); ?>', svg: 'climate-1', class: 'text-teal-custom' },
+      { value: 23, url: '<?php echo e(asset('/img/icons/blue/3.png')); ?>', svg: 'climate-1', class: 'text-teal-custom' },
+      { value: 24, url: '<?php echo e(asset('/img/icons/blue/4.png')); ?>', svg: 'climate-1', class: 'text-teal-custom' },
+      { value: 25, url: '<?php echo e(asset('/img/icons/red/1.png')); ?>', svg: 'climate-1', class: 'text-red-main' },
+      { value: 26, url: '<?php echo e(asset('/img/icons/red/2.png')); ?>', svg: 'climate-1', class: 'text-red-main' },
+      { value: 27, url: '<?php echo e(asset('/img/icons/red/3.png')); ?>', svg: 'climate-1', class: 'text-red-main' },
+      { value: 28, url: '<?php echo e(asset('/img/icons/red/4.png')); ?>', svg: 'climate-1', class: 'text-red-main' },
     ];
 
     var climateInterval = null;
@@ -160,4 +160,5 @@
     updateImage();
   });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php /**PATH C:\laragon\www\ztm_ui\resources\views/livewire/climate.blade.php ENDPATH**/ ?>

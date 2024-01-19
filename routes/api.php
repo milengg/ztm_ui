@@ -23,11 +23,8 @@ Route::controller(AuthController::class)->group(function() {
 });
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::get('data/get', [ValueController::class, 'index']);
-    Route::post('data/post', [ValueController::class, 'update']);
-});
-
-Route::middleware('auth:sanctum')->group(function() {
+    Route::get('data/get', [ValueController::class, 'getRegisters']);
+    Route::post('data/post', [ValueController::class, 'setRegisters']);
     Route::get('settings/get', [ValueController::class, 'getSettings']);
     Route::post('settings/post', [ValueController::class, 'setSettings']);
 });

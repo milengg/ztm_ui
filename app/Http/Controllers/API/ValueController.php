@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\Value;
 use App\Models\Settings;
+use App\Models\Register;
 use Validator;
 
 use App\Http\Resources\ValueResource;
@@ -19,7 +20,7 @@ class ValueController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getRegisters()
     {
         $values = Value::all();
         return $this->sendResponse(ValueResource::collection($values), 'Values retrieved successfully.');
@@ -33,28 +34,52 @@ class ValueController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function update(Request $request)
+    public function setRegisters(Request $request)
     {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'min' => 'required',
-            'max' => 'required',
-            'status' => 'required'
-        ]);
+        foreach($request->all() as $items)
+        {
+            $validator = Validator::make($items, [
+                'name' => 'required',
+                'value' => 'required',
+                'min' => 'nullable',
+                'max' => 'nullable',
+                'status' => 'required'
+            ]);
    
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            if($validator->fails()){
+                return $this->sendError('Validation Error.', $validator->errors());       
+            }
+
+            $register_id = Register::where('name', $items['name'])->first();
+            if($register_id)
+            {
+                $register_id = $register_id->id;
+            } else {
+                return $this->sendError('Registers Error', 'No such register in database!');
+            }
+
+            $register = Value::where('name', $items['name'])->first();
+            if($register)
+            {
+                $register->update([
+                    'name' => $items['name'],
+                    'value' => $items['value'],
+                    'min' => $items['min'],
+                    'max' => $items['max'],
+                    'status' => $items['status']
+                ]);
+            } else {
+                Value::create([
+                    'register_id' => $register_id,
+                    'name' => $items['name'],
+                    'value' => $items['value'],
+                    'min' => $items['min'],
+                    'max' => $items['max'],
+                    'status' => $items['status']
+                ]);
+            }
         }
-
-        $id = Value::where('name', $input['name'])->first()->value('id');
-        $value = Value::find($id);
-        $value->min = $input['min'];
-        $value->max = $input['max'];
-        $value->status = $input['status'];
-        $value->save();
-
-        return $this->sendResponse(new ValueResource($value), 'Value updated successfully.');
+        return $this->sendResponse('Registers operations:', 'Completed!');
     }
 
     public function getSettings()
