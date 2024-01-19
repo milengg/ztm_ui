@@ -35,7 +35,7 @@
         </div>
         <div class="flex justify-between mx-14 mt-7">
             <div class="mt-8 text-center">
-                <p class="text-white font-roboto font-bold text-4xl">ZTM001</p>
+                <p class="text-white font-roboto font-bold text-4xl">{{ $hostname->parameter_value ?? 'ЛИПСВА' }}</p>
             </div>
             <img class="rounded" src="{{ asset('img/bcvt-qr.png') }}" width="100" alt="qr code" />
         </div>

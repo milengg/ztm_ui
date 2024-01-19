@@ -122,7 +122,7 @@
       const newClass = image.class;
       const oldClass = mainContainer.getAttribute('class');
 
-      if(image.value === 21)
+      if(image.value === 21 || image.value === 25)
       {
         document.getElementById('eco-logo').style.visibility = 'visible';
       } else {
