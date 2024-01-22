@@ -37,13 +37,13 @@ class AdminController extends Controller
             {
                 Settings::create([
                     'parameter_name' => 'tablet_ip',
-                    'parameter_value' => $this->client_settings->getIpAddress(),
+                    'parameter_value' => $this->client_settings->getIpAddress() ?? 0,
                     'bgerp_sync' => 0
                 ]);
             } else {
                 $tablet_ip->update([
                     'parameter_name' => 'tablet_ip',
-                    'parameter_value' => $this->client_settings->getIpAddress(),
+                    'parameter_value' => $this->client_settings->getIpAddress() ?? 0,
                     'bgerp_sync' => 0
                 ]);
             }
@@ -158,7 +158,7 @@ class AdminController extends Controller
         ClientSettings::create([
             'server_name' => $validated['server_name'],
             'server_ip' => $validated['server_ip'],
-			'tablet_ip' => $this->client_settings->getIpAddress(),
+			'tablet_ip' => $this->client_settings->getIpAddress() ?? 0,
             'public_key' => $request->input('public_key')
         ]);
 
