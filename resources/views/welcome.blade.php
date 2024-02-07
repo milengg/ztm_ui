@@ -22,7 +22,7 @@
     </div>
     <div class="mt-5">
         <div class="flex justify-center">
-            <img id="forecast_icon_1" class="inline pr-10" width="120px" alt="weather1" />
+            <img id="forecast_icon_1" class="inline pr-10" width="160px" alt="weather1" />
             <p id="forecast_temp_1" class="text-gray-dark font-roboto text-6xl">0°C</p>
         </div>
         <div class="flex justify-center mt-5">
