@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             RegisterSeeder::class,
-            ValueSeeder::class,
             SettingsSeeder::class,
-            UpdatesSeeder::class
+            UpdatesSeeder::class,
+            ValueSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 
