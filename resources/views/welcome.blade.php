@@ -84,7 +84,7 @@
         }
 
         fetchWeather();
-        setInterval(fetchWeather, 5000);
+        setInterval(fetchWeather, 900000);
     });
 </script>
 @endpush
