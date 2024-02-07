@@ -97,6 +97,11 @@ class UpdateInfo extends Command
                 'type' => 'Добавен',
                 'content' => 'Добавена парола за отключване и менажиране, разделение междо админ и потребител.'
             ],
+            [
+                'version' => '2.1.3',
+                'type' => 'Добавен',
+                'content' => 'Добавени икони за времето и логика в базата данни.'
+            ],
         ];
         try {
             Changelog::insert($changelog_updates);
