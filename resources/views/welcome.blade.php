@@ -22,16 +22,16 @@
     </div>
     <div class="mt-5">
         <div class="flex justify-center">
-            <img class="inline pr-10" src="{{ asset('img/weather/thunders.png') }}" alt="weather" />
-            <p class="text-gray-dark font-roboto text-6xl">26°C</p>
+            <img id="forecast_icon_1" class="inline pr-10" width="120px" alt="weather1" />
+            <p id="forecast_temp_1" class="text-gray-dark font-roboto text-6xl">0°C</p>
         </div>
         <div class="flex justify-center mt-5">
-            <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 3 ЧАСА 26°C</p>
-            <img class="inline" src="{{ asset('img/weather/rain.png') }}" alt="weather" />
+            <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 3 ЧАСА <span id="forecast_temp_2">0°C</span></p>
+            <img id="forecast_icon_2" width="75px" class="inline" alt="weather2" />
         </div>
         <div class="flex justify-center mt-3">
-            <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 6 ЧАСА 16°C</p>
-            <img class="inline" src="{{ asset('img/weather/rain.png') }}" alt="weather" />
+            <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 6 ЧАСА <span id="forecast_temp_3">0°C</span></p>
+            <img id="forecast_icon_3" width="75px" class="inline" alt="weather3" />
         </div>
         <div class="flex justify-between mx-14 mt-7">
             <div class="mt-8 text-center">
@@ -54,5 +54,38 @@
 <script src="{{ asset('js/clock.js') }}"></script>
 <script src="{{ asset('js/functions.js') }}"></script>
 <script src="{{ asset('js/lock.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        function fetchWeather() {
+            $.ajax({
+                url: '/weather',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $('#forecast_temp_1').empty();
+                    $('#forecast_temp_2').empty();
+                    $('#forecast_temp_3').empty();
+                    //Icon
+                    var forecast_icon_url1 = 'weather-icons/' + response[4].value + '.svg';
+                    var forecast_icon_url2 = 'weather-icons/' + response[8].value + '.svg';
+                    var forecast_icon_url3 = 'weather-icons/' + response[12].value + '.svg';
+                    $('#forecast_icon_1').attr('src', forecast_icon_url1);
+                    $('#forecast_icon_2').attr('src', forecast_icon_url2);
+                    $('#forecast_icon_3').attr('src', forecast_icon_url3);
+                    //Temp
+                    $('#forecast_temp_1').append(response[6].value + '°C');
+                    $('#forecast_temp_2').append(response[10].value + '°C');
+                    $('#forecast_temp_3').append(response[14].value + '°C');
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        fetchWeather();
+        setInterval(fetchWeather, 5000);
+    });
+</script>
 @endpush
 @endsection

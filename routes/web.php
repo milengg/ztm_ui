@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\PageController::class, 'index'])->name('welcome');
+Route::get('/weather', [App\Http\Controllers\API\ValueController::class, 'weather_values'])->name('weather');
+
 
 // Admin
 Route::group(['prefix' => 'auth'], function () {

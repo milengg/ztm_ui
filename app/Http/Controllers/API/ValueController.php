@@ -121,4 +121,10 @@ class ValueController extends BaseController
         $status = Settings::where('parameter_name', $items['parameter_name'])->first();
         return $this->sendResponse(new SettingsResource($status), 'Settings refreshed successfully.');
     }
+
+    public function weather_values()
+    {
+        $weather_values = Value::all();
+        return response()->json($weather_values);
+    }
 }
