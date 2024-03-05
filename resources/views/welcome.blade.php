@@ -22,16 +22,16 @@
     </div>
     <div class="mt-5">
         <div class="flex justify-center">
-            <img id="forecast_icon_1" class="inline pr-10" width="120px" alt="weather1" />
-            <p id="forecast_temp_1" class="text-gray-dark font-roboto text-6xl">0°C</p>
+            <img id="forecast_icon_1" class="inline pr-10" width="100px" alt="weather1" />
+            <p id="forecast_temp_1" class="text-gray-dark font-roboto text-5xl">0°C</p>
         </div>
         <div class="flex justify-center mt-5">
             <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 3 ЧАСА <span id="forecast_temp_2">0°C</span></p>
-            <img id="forecast_icon_2" width="60px" class="inline" alt="weather2" />
+            <img id="forecast_icon_2" width="45px" class="inline" alt="weather2" />
         </div>
         <div class="flex justify-center mt-3">
             <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 6 ЧАСА <span id="forecast_temp_3">0°C</span></p>
-            <img id="forecast_icon_3" width="60px" class="inline" alt="weather3" />
+            <img id="forecast_icon_3" width="45px" class="inline" alt="weather3" />
         </div>
         <div class="flex justify-between mx-14 mt-7">
             <div class="mt-8 text-center">
@@ -84,7 +84,7 @@
         }
 
         fetchWeather();
-        setInterval(fetchWeather, 900000);
+        setInterval(fetchWeather, 300000);
     });
 </script>
 @endpush
