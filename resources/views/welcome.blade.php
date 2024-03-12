@@ -62,20 +62,21 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response);
                     $('#forecast_temp_1').empty();
                     $('#forecast_temp_2').empty();
                     $('#forecast_temp_3').empty();
                     //Icon
-                    var forecast_icon_url1 = 'weather-icons/' + response[4].value + '.svg';
-                    var forecast_icon_url2 = 'weather-icons/' + response[8].value + '.svg';
-                    var forecast_icon_url3 = 'weather-icons/' + response[12].value + '.svg';
+                    var forecast_icon_url1 = 'weather-icons/' + response["envm.forecast.icon_0"].value + '.svg';
+                    var forecast_icon_url2 = 'weather-icons/' + response["envm.forecast.icon_3"].value + '.svg';
+                    var forecast_icon_url3 = 'weather-icons/' + response["envm.forecast.icon_6"].value + '.svg';
                     $('#forecast_icon_1').attr('src', forecast_icon_url1);
                     $('#forecast_icon_2').attr('src', forecast_icon_url2);
                     $('#forecast_icon_3').attr('src', forecast_icon_url3);
                     //Temp
-                    $('#forecast_temp_1').append(response[6].value + '°C');
-                    $('#forecast_temp_2').append(response[10].value + '°C');
-                    $('#forecast_temp_3').append(response[14].value + '°C');
+                    $('#forecast_temp_1').append(response["envm.forecast.temp_0"].value + '°C');
+                    $('#forecast_temp_2').append(response["envm.forecast.temp_3"].value + '°C');
+                    $('#forecast_temp_3').append(response["envm.forecast.temp_6"].value + '°C');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);

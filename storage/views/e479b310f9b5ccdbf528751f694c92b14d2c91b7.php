@@ -18,15 +18,15 @@
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('climate', [])->html();
-} elseif ($_instance->childHasBeenRendered('ii3zKsR')) {
-    $componentId = $_instance->getRenderedChildComponentId('ii3zKsR');
-    $componentTag = $_instance->getRenderedChildComponentTagName('ii3zKsR');
+} elseif ($_instance->childHasBeenRendered('70NUd7c')) {
+    $componentId = $_instance->getRenderedChildComponentId('70NUd7c');
+    $componentTag = $_instance->getRenderedChildComponentTagName('70NUd7c');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('ii3zKsR');
+    $_instance->preserveRenderedChild('70NUd7c');
 } else {
     $response = \Livewire\Livewire::mount('climate', []);
     $html = $response->html();
-    $_instance->logRenderedChild('ii3zKsR', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('70NUd7c', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
@@ -35,31 +35,31 @@ echo $html;
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('lights', [])->html();
-} elseif ($_instance->childHasBeenRendered('cVkVxes')) {
-    $componentId = $_instance->getRenderedChildComponentId('cVkVxes');
-    $componentTag = $_instance->getRenderedChildComponentTagName('cVkVxes');
+} elseif ($_instance->childHasBeenRendered('pVUtjt7')) {
+    $componentId = $_instance->getRenderedChildComponentId('pVUtjt7');
+    $componentTag = $_instance->getRenderedChildComponentTagName('pVUtjt7');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('cVkVxes');
+    $_instance->preserveRenderedChild('pVUtjt7');
 } else {
     $response = \Livewire\Livewire::mount('lights', []);
     $html = $response->html();
-    $_instance->logRenderedChild('cVkVxes', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('pVUtjt7', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
     </div>
     <div class="mt-5">
         <div class="flex justify-center">
-            <img id="forecast_icon_1" class="inline pr-10" width="120px" alt="weather1" />
-            <p id="forecast_temp_1" class="text-gray-dark font-roboto text-6xl">0°C</p>
+            <img id="forecast_icon_1" class="inline pr-10" width="100px" alt="weather1" />
+            <p id="forecast_temp_1" class="text-gray-dark font-roboto text-5xl">0°C</p>
         </div>
         <div class="flex justify-center mt-5">
             <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 3 ЧАСА <span id="forecast_temp_2">0°C</span></p>
-            <img id="forecast_icon_2" width="60px" class="inline" alt="weather2" />
+            <img id="forecast_icon_2" width="45px" class="inline" alt="weather2" />
         </div>
         <div class="flex justify-center mt-3">
             <p class="text-teal-custom font-roboto pr-14 text-2xl">СЛЕД 6 ЧАСА <span id="forecast_temp_3">0°C</span></p>
-            <img id="forecast_icon_3" width="60px" class="inline" alt="weather3" />
+            <img id="forecast_icon_3" width="45px" class="inline" alt="weather3" />
         </div>
         <div class="flex justify-between mx-14 mt-7">
             <div class="mt-8 text-center">
@@ -75,15 +75,15 @@ echo $html;
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('vent', [])->html();
-} elseif ($_instance->childHasBeenRendered('vXAbGzQ')) {
-    $componentId = $_instance->getRenderedChildComponentId('vXAbGzQ');
-    $componentTag = $_instance->getRenderedChildComponentTagName('vXAbGzQ');
+} elseif ($_instance->childHasBeenRendered('AUJwgSu')) {
+    $componentId = $_instance->getRenderedChildComponentId('AUJwgSu');
+    $componentTag = $_instance->getRenderedChildComponentTagName('AUJwgSu');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('vXAbGzQ');
+    $_instance->preserveRenderedChild('AUJwgSu');
 } else {
     $response = \Livewire\Livewire::mount('vent', []);
     $html = $response->html();
-    $_instance->logRenderedChild('vXAbGzQ', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('AUJwgSu', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
@@ -92,15 +92,15 @@ echo $html;
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('blinds', [])->html();
-} elseif ($_instance->childHasBeenRendered('9VMKINb')) {
-    $componentId = $_instance->getRenderedChildComponentId('9VMKINb');
-    $componentTag = $_instance->getRenderedChildComponentTagName('9VMKINb');
+} elseif ($_instance->childHasBeenRendered('B026lLh')) {
+    $componentId = $_instance->getRenderedChildComponentId('B026lLh');
+    $componentTag = $_instance->getRenderedChildComponentTagName('B026lLh');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('9VMKINb');
+    $_instance->preserveRenderedChild('B026lLh');
 } else {
     $response = \Livewire\Livewire::mount('blinds', []);
     $html = $response->html();
-    $_instance->logRenderedChild('9VMKINb', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('B026lLh', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
@@ -118,20 +118,21 @@ echo $html;
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response);
                     $('#forecast_temp_1').empty();
                     $('#forecast_temp_2').empty();
                     $('#forecast_temp_3').empty();
                     //Icon
-                    var forecast_icon_url1 = 'weather-icons/' + response[4].value + '.svg';
-                    var forecast_icon_url2 = 'weather-icons/' + response[8].value + '.svg';
-                    var forecast_icon_url3 = 'weather-icons/' + response[12].value + '.svg';
+                    var forecast_icon_url1 = 'weather-icons/' + response["envm.forecast.icon_0"].value + '.svg';
+                    var forecast_icon_url2 = 'weather-icons/' + response["envm.forecast.icon_3"].value + '.svg';
+                    var forecast_icon_url3 = 'weather-icons/' + response["envm.forecast.icon_6"].value + '.svg';
                     $('#forecast_icon_1').attr('src', forecast_icon_url1);
                     $('#forecast_icon_2').attr('src', forecast_icon_url2);
                     $('#forecast_icon_3').attr('src', forecast_icon_url3);
                     //Temp
-                    $('#forecast_temp_1').append(response[6].value + '°C');
-                    $('#forecast_temp_2').append(response[10].value + '°C');
-                    $('#forecast_temp_3').append(response[14].value + '°C');
+                    $('#forecast_temp_1').append(response["envm.forecast.temp_0"].value + '°C');
+                    $('#forecast_temp_2').append(response["envm.forecast.temp_3"].value + '°C');
+                    $('#forecast_temp_3').append(response["envm.forecast.temp_6"].value + '°C');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -140,7 +141,7 @@ echo $html;
         }
 
         fetchWeather();
-        setInterval(fetchWeather, 900000);
+        setInterval(fetchWeather, 300000);
     });
 </script>
 <?php $__env->stopPush(); ?>

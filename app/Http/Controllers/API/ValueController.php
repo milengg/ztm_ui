@@ -57,7 +57,7 @@ class ValueController extends BaseController
             } else {
                 return $this->sendError('Registers Error', 'No such register in database!');
             }
-
+            
             $register = Value::where('name', $items['name'])->first();
             if($register)
             {
@@ -125,6 +125,6 @@ class ValueController extends BaseController
     public function weather_values()
     {
         $weather_values = Value::all();
-        return response()->json($weather_values);
+        return response()->json($weather_values->keyBy('name'));
     }
 }
