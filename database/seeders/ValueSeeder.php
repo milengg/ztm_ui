@@ -21,6 +21,9 @@ class ValueSeeder extends Seeder
 
         $hvac_temp_adjust = Register::where('name', 'hvac.temp_1.adjust')->first();
         $blinds_blind_1_position = Register::where('name', 'blinds.blind_1.position')->first();
+        $blinds_blind_2_position = Register::where('name', 'blinds.blind_2.position')->first();
+        $blinds_blind_3_position = Register::where('name', 'blinds.blind_3.position')->first();
+        $blinds_blind_4_position = Register::where('name', 'blinds.blind_4.position')->first();
         $light_target_illum = Register::where('name', 'light.target_illum')->first();
         $vent_op_setpoint_1 = Register::where('name', 'vent.op_setpoint_1')->first();
         $values = [
@@ -38,12 +41,30 @@ class ValueSeeder extends Seeder
             ],
             [
                 'id' => 3,
+                'register_id' => $blinds_blind_2_position->id,
+                'name' => 'blinds.blind_2.position',
+                'value' => 0
+            ],
+            [
+                'id' => 4,
+                'register_id' => $blinds_blind_3_position->id,
+                'name' => 'blinds.blind_3.position',
+                'value' => 0
+            ],
+            [
+                'id' => 5,
+                'register_id' => $blinds_blind_4_position->id,
+                'name' => 'blinds.blind_4.position',
+                'value' => 0
+            ],
+            [
+                'id' => 6,
                 'register_id' => $light_target_illum->id,
                 'name' => 'light.target_illum',
                 'value' => 0
             ],
             [
-                'id' => 4,
+                'id' => 7,
                 'register_id' => $vent_op_setpoint_1->id,
                 'name' => 'vent.op_setpoint_1',
                 'value' => 0

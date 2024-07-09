@@ -102,6 +102,11 @@ class UpdateInfo extends Command
                 'type' => 'Добавен',
                 'content' => 'Добавени икони за времето и логика в базата данни.'
             ],
+            [
+                'version' => '2.1.4',
+                'type' => 'Добавен',
+                'content' => 'Обновяване регистри. Добавяне нови регистри за щори от 1 од 4 зони.'
+            ],
         ];
         try {
             Changelog::insert($changelog_updates);

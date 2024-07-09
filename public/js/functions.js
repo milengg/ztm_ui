@@ -47,6 +47,18 @@ rangeSliderBlinds.addEventListener("change", debounce(function() {
         "register_name": "blinds.blind_1.position",
         "value": rangeSliderBlinds.value
     });
+    setRegisters({
+        "register_name": "blinds.blind_2.position",
+        "value": rangeSliderBlinds.value
+    });
+    setRegisters({
+        "register_name": "blinds.blind_3.position",
+        "value": rangeSliderBlinds.value
+    });
+    setRegisters({
+        "register_name": "blinds.blind_4.position",
+        "value": rangeSliderBlinds.value
+    });
 }, WAIT_TIME));
 rangeSliderBlinds.addEventListener("input", function() {
     textElementBlinds.innerHTML = rangeSliderBlinds.value + "<span class='font-roboto text-5xl absolute pt-1 pl-2'>%</span>";

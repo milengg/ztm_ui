@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('range')->nullable();
             $table->string('plugin')->nullable();
             $table->string('scope')->nullable();
-            $table->string('default')->nullable();
+            $table->text('default')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
         });
