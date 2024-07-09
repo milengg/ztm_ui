@@ -107,6 +107,11 @@ class UpdateInfo extends Command
                 'type' => 'Добавен',
                 'content' => 'Обновяване регистри. Добавяне нови регистри за щори от 1 од 4 зони.'
             ],
+            [
+                'version' => '2.1.5',
+                'type' => 'Добавен',
+                'content' => 'Добавяне полета за тампери и техните статуси.'
+            ],
         ];
         try {
             Changelog::insert($changelog_updates);

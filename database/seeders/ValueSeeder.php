@@ -26,6 +26,9 @@ class ValueSeeder extends Seeder
         $blinds_blind_4_position = Register::where('name', 'blinds.blind_4.position')->first();
         $light_target_illum = Register::where('name', 'light.target_illum')->first();
         $vent_op_setpoint_1 = Register::where('name', 'vent.op_setpoint_1')->first();
+        $window_tamper = Register::where('name', 'envm.window_tamper.activations')->first();
+        $door_tamper = Register::where('name', 'envm.door_tamper.activations')->first();
+        $pir = Register::where('name', 'envm.pir.activations')->first();
         $values = [
             [
                 'id' => 1,
@@ -67,6 +70,38 @@ class ValueSeeder extends Seeder
                 'id' => 7,
                 'register_id' => $vent_op_setpoint_1->id,
                 'name' => 'vent.op_setpoint_1',
+                'value' => 0
+            ],
+            [
+                'id' => 8,
+                'register_id' => $window_tamper->id,
+                'name' => 'envm.window_tamper.activations',
+                'value' => '{
+                                "WINT_1": [
+                                  {
+                                    "ts": 1720444956,
+                                    "state": false
+                                  }
+                                ]
+                            }'
+            ],
+            [
+                'id' => 9,
+                'register_id' => $door_tamper->id,
+                'name' => 'envm.door_tamper.activations',
+                'value' => '{
+                                "DRT_1": [
+                                  {
+                                    "ts": 1720444956,
+                                    "state": false
+                                  }
+                                ]
+                            }'
+            ],
+            [
+                'id' => 10,
+                'register_id' => $door_tamper->id,
+                'name' => 'envm.pir.activations',
                 'value' => 0
             ],
         ];

@@ -16,6 +16,7 @@ use App\Models\ClientSettings;
 use App\Models\ClientRequest;
 use App\Models\Updates;
 use App\Models\Group;
+use App\Models\Value;
 
 class AdminController extends Controller
 {
@@ -75,10 +76,23 @@ class AdminController extends Controller
         Auth::logout();
     }
 
+    protected function collectionConverter($json, $identifier, $function)
+    {
+        $json_data = json_decode($json, true);
+        $collection = collect($json_data);
+        dd($collection);
+        $state = $collection->get($identifier)[0][$function];
+        return $state;
+    }
+
     public function main()
     {
+        $window_tamper = Value::where('name', 'envm.window_tamper.activations')->first();
+        $window_tamper_state = $this->collectionConverter($window_tamper->value, 'WINT_1', 'state');
+        $door_tamper = Value::where('name', 'envm.door_tamper.activations')->first();
+        $door_tamper_state = $this->collectionConverter($door_tamper->value, 'DRT_1', 'state');
         $settings = Settings::paginate(7);
-        return view('panel.index', compact('settings'));
+        return view('panel.index', compact('settings', 'window_tamper_state', 'door_tamper_state'));
     }
 
     public function logs()

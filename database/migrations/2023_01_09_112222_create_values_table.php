@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('register_id');
             $table->string('name')->nullable();
-            $table->string('value')->nullable();
+            $table->text('value')->nullable();
             $table->string('min')->nullable();
             $table->string('max')->nullable();
             $table->enum('status', ['Rising', 'Falling', 'Normal'])->default('Normal');
