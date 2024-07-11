@@ -35,12 +35,12 @@
                 @switch($setting->parameter_name)
                     @case('envm.window_tamper.activations')
                         <td class="px-6 py-4">
-                            {{ $window_tamper_state ? 'Затворено':'Отворено' }}
+                            {{ $window_tamper_state ? 'Отворено':'Затворено' }}
                         </td>
                         @break
                     @case('envm.door_tamper.activations')
                         <td class="px-6 py-4">
-                            {{ $door_tamper_state ? 'Затворено':'Отворено' }}
+                            {{ $door_tamper_state ? 'Отворено':'Затворено' }}
                         </td>
                         @break
                     @case('envm.pir.activations')
