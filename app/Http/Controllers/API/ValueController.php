@@ -134,7 +134,6 @@ class ValueController extends BaseController
         {
             $validator = Validator::make($items, [
                 'name' => 'required',
-                'value' => 'required',
                 'min' => 'nullable',
                 'max' => 'nullable',
                 'status' => 'required'
