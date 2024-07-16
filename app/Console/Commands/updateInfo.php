@@ -112,6 +112,11 @@ class UpdateInfo extends Command
                 'type' => 'Добавен',
                 'content' => 'Добавяне полета за тампери и техните статуси.'
             ],
+            [
+                'version' => '2.1.6',
+                'type' => 'Добавен',
+                'content' => 'Добавен нов end-point /sync сменена логика на заявките.'
+            ],
         ];
         try {
             Changelog::insert($changelog_updates);
