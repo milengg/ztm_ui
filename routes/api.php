@@ -23,6 +23,7 @@ Route::controller(AuthController::class)->group(function() {
 });
 
 Route::middleware('auth:sanctum')->group(function() {
+    Route::post('sync', [ValueController::class, 'sync']);
     Route::get('data/get', [ValueController::class, 'getRegisters']);
     Route::post('data/post', [ValueController::class, 'setRegisters']);
     Route::get('settings/get', [ValueController::class, 'getSettings']);

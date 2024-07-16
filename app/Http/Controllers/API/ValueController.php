@@ -127,4 +127,53 @@ class ValueController extends BaseController
         $weather_values = Value::all();
         return response()->json($weather_values->keyBy('name'));
     }
+
+    public function sync(Request $request)
+    {
+        foreach($request->all() as $items)
+        {
+            $validator = Validator::make($items, [
+                'name' => 'required',
+                'value' => 'required',
+                'min' => 'nullable',
+                'max' => 'nullable',
+                'status' => 'required'
+            ]);
+   
+            if($validator->fails()){
+                return $this->sendError('Validation Error.', $validator->errors());       
+            }
+
+            $register_id = Register::where('name', $items['name'])->first();
+            if($register_id)
+            {
+                $register_id = $register_id->id;
+            } else {
+                return $this->sendError('Registers Error', 'No such register in database!');
+            }
+            
+            $register = Value::where('name', $items['name'])->first();
+            if($register)
+            {
+                $register->update([
+                    'name' => $items['name'],
+                    'value' => $items['value'],
+                    'min' => $items['min'],
+                    'max' => $items['max'],
+                    'status' => $items['status']
+                ]);
+            } else {
+                Value::create([
+                    'register_id' => $register_id,
+                    'name' => $items['name'],
+                    'value' => $items['value'],
+                    'min' => $items['min'],
+                    'max' => $items['max'],
+                    'status' => $items['status']
+                ]);
+            }
+        }
+        $values = Value::all();
+        return $this->sendResponse(ValueResource::collection($values), 'Sync is successful!');
+    }
 }
