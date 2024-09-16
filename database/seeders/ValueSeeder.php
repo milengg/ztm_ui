@@ -102,7 +102,9 @@ class ValueSeeder extends Seeder
                 'id' => 10,
                 'register_id' => $door_tamper->id,
                 'name' => 'envm.pir.activations',
-                'value' => 0
+                'value' => '{
+                                "PIR_1": []
+                            }'
             ],
         ];
         Value::insert($values);

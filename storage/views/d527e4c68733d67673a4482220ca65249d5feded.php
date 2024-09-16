@@ -8,15 +8,15 @@
 <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('info', [])->html();
-} elseif ($_instance->childHasBeenRendered('KsSk289')) {
-    $componentId = $_instance->getRenderedChildComponentId('KsSk289');
-    $componentTag = $_instance->getRenderedChildComponentTagName('KsSk289');
+} elseif ($_instance->childHasBeenRendered('JiKgTqG')) {
+    $componentId = $_instance->getRenderedChildComponentId('JiKgTqG');
+    $componentTag = $_instance->getRenderedChildComponentTagName('JiKgTqG');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('KsSk289');
+    $_instance->preserveRenderedChild('JiKgTqG');
 } else {
     $response = \Livewire\Livewire::mount('info', []);
     $html = $response->html();
-    $_instance->logRenderedChild('KsSk289', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('JiKgTqG', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
@@ -50,13 +50,13 @@ echo $html;
                 <?php switch($setting->parameter_name):
                     case ('envm.window_tamper.activations'): ?>
                         <td class="px-6 py-4">
-                            <?php echo e($window_tamper_state ? 'Затворено':'Отворено'); ?>
+                            <?php echo e($window_tamper_state ? 'Отворено':'Затворено'); ?>
 
                         </td>
                         <?php break; ?>
                     <?php case ('envm.door_tamper.activations'): ?>
                         <td class="px-6 py-4">
-                            <?php echo e($door_tamper_state ? 'Затворено':'Отворено'); ?>
+                            <?php echo e($door_tamper_state ? 'Отворено':'Затворено'); ?>
 
                         </td>
                         <?php break; ?>
