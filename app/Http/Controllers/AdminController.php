@@ -80,8 +80,13 @@ class AdminController extends Controller
     {
         $json_data = json_decode($json, true);
         $collection = collect($json_data);
-        $state = $collection->get($identifier)[0][$function];
-        return $state;
+        if ($collection->has($identifier)) {
+            $item = $collection->get($identifier);
+            if (isset($item[0]) && isset($item[0][$function])) {
+                return $item[0][$function];
+            }
+        }
+        return null;
     }
 
     public function main()
